@@ -1,0 +1,9 @@
+apiVersion: compute.starter.org/v1alpha1
+kind: VirtualMachine
+metadata:
+  name: my-vm
+spec:
+  parameters:
+    region: east
+    operatingSystem: Linux (Ubuntu)
+    size: small
