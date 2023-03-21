@@ -1,0 +1,61 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xvirtualmachines.compute.starter.org
+spec:
+  group: compute.starter.org
+  names:
+    kind: XVirtualMachine
+    plural: xvirtualmachines
+  claimNames:
+    kind: VirtualMachine
+    plural: virtualmachines
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              description: |
+                The specification for how this VirtualMachine should be
+                deployed.
+              properties:
+                parameters:
+                  type: object
+                  description: |
+                    The parameters indicating how this VirtualMachine should
+                    be configured.
+                  properties:
+                    region:
+                      type: string
+                      description: |
+                        The geographic region in which this Virtual Machine
+                        should be deployed.
+                      enum:
+                        - east
+                        - west
+                    operatingSystem:
+                      type: string
+                      description: |
+                        The operating system used for this VirtualMachine.
+                      enum:
+                        - Windows
+                        - Linux (Ubuntu)
+                    size:
+                      type: string
+                      description: |
+                        The size of this VirtualMachine.
+                      enum:
+                        - small
+                        - medium
+                        - large
+                  required:
+                    - region
+                    - operatingSystem
+                    - size
+              required:
+                - parameters
