@@ -59,3 +59,53 @@ spec:
                     - size
               required:
                 - parameters
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: xvirtualmachines.aws.compute.starter.org
+spec:
+  group: aws.compute.starter.org
+  names:
+    kind: XVirtualMachine
+    plural: xvirtualmachines
+  versions:
+    - name: v1alpha1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              description: |
+                The specification for how this VirtualMachine should be
+                deployed.
+              properties:
+                parameters:
+                  type: object
+                  description: |
+                    The parameters indicating how this VirtualMachine should
+                    be configured.
+                  properties:
+                    operatingSystem:
+                      type: string
+                      description: |
+                        The operating system used for this VirtualMachine.
+                      enum:
+                        - Windows
+                        - Linux (Ubuntu)
+                    size:
+                      type: string
+                      description: |
+                        The size of this VirtualMachine.
+                      enum:
+                        - small
+                        - medium
+                        - large
+                  required:
+                    - operatingSystem
+                    - size
+              required:
+                - parameters

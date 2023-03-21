@@ -7,7 +7,83 @@ metadata:
 spec:
   compositeTypeRef:
     apiVersion: compute.starter.org/v1alpha1
-    kind: VirtualMachine
+    kind: XVirtualMachine
+  resources:
+    - base:
+        apiVersion: aws.compute.starter.org/v1alpha1
+        kind: XVirtualMachine
+        spec:
+          parameters:
+            operatingSystem: Linux (Ubuntu) # patched
+            size: small # patched
+          compositionSelector:
+            matchLabels:
+              region: east # patched
+      patches:
+        - fromFieldPath: spec.parameters.region
+          toFieldPath: spec.compositionSelector.matchLabels.region
+        - fromFieldPath: spec.parameters.operatingSystem
+          toFieldPath: spec.forProvider.ami
+          transforms:
+            - type: map
+              map:
+                Windows: ami-00eda368daf738c59 # Windows Server 2022
+                Linux (Ubuntu): ami-0d50e5e845c552faf # Ubuntu 22.04 LTS
+        - fromFieldPath: spec.parameters.size
+          toFieldPath: spec.forProvider.instanceType
+          transforms:
+            - type: map
+              map:
+                small: t2.micro
+                medium: m4.large
+                large: m4.xlarge
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: east.virtualmachines.aws.compute.starter.org
+  labels:
+    region: east
+spec:
+  compositeTypeRef:
+    apiVersion: aws.compute.starter.org/v1alpha1
+    kind: XVirtualMachine
+  resources:
+    - base:
+        apiVersion: ec2.aws.upbound.io/v1beta1
+        kind: Instance
+        spec:
+          forProvider:
+            ami: ami-0557a15b87f6559cf # patched
+            instanceType: t2.micro # patched
+            region: us-east-1
+      patches:
+        - fromFieldPath: spec.parameters.operatingSystem
+          toFieldPath: spec.forProvider.ami
+          transforms:
+            - type: map
+              map:
+                Windows: ami-0e38fa17744b2f6a5 # Windows Server 2022
+                Linux (Ubuntu): ami-0557a15b87f6559cf # Ubuntu 22.04 LTS
+        - fromFieldPath: spec.parameters.size
+          toFieldPath: spec.forProvider.instanceType
+          transforms:
+            - type: map
+              map:
+                small: t2.micro
+                medium: m4.large
+                large: m4.xlarge
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: west.virtualmachines.aws.compute.starter.org
+  labels:
+    region: west
+spec:
+  compositeTypeRef:
+    apiVersion: aws.compute.starter.org/v1alpha1
+    kind: XVirtualMachine
   resources:
     - base:
         apiVersion: ec2.aws.upbound.io/v1beta1
@@ -16,21 +92,14 @@ spec:
           forProvider:
             ami: ami-0d50e5e845c552faf # patched
             instanceType: t2.micro # patched
-            region: us-west-1 # patched
+            region: us-west-1
       patches:
-        - fromFieldPath: spec.parameters.region
-          toFieldPath: spec.forProvider.region
-          transforms:
-            - type: map
-              map:
-                east: us-east-1
-                west: us-west-1
         - fromFieldPath: spec.parameters.operatingSystem
           toFieldPath: spec.forProvider.ami
           transforms:
             - type: map
               map:
-                Windows: ami-00eda368daf738c59 # Windows Server 2022
+                Windows: ami-01d9361b1c190a61b # Windows Server 2022
                 Linux (Ubuntu): ami-0d50e5e845c552faf # Ubuntu 22.04 LTS
         - fromFieldPath: spec.parameters.size
           toFieldPath: spec.forProvider.instanceType
