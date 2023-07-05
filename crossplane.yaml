@@ -12,9 +12,9 @@ metadata:
       TODO
 spec:
   crossplane:
-    version: ">=v1.7.0-0"
+    version: ">=v1.12.0"
   dependsOn:
-    - configuration: xpkg.upbound.io/upbound/configuration-rds
-      version: ">=v0.0.1"
-    - configuration: xpkg.upbound.io/upbound/configuration-eks
-      version: ">=v0.0.2"
+    - provider: xpkg.upbound.io/upbound/provider-family-aws
+      version: ">=v0.37.0"
+    - provider: xpkg.upbound.io/upbound/provider-aws-ec2
+      version: ">=v0.37.0"
