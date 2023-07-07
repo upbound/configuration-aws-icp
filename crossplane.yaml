@@ -15,6 +15,6 @@ spec:
     version: ">=v1.7.0-0"
   dependsOn:
     - configuration: xpkg.upbound.io/upbound/configuration-rds
-      version: ">=v0.0.1"
+      version: ">=v0.0.3"
     - configuration: xpkg.upbound.io/upbound/configuration-eks
-      version: ">=v0.0.2"
+      version: ">=v0.0.3"
