@@ -1,3 +1,8 @@
+> **This repository is archived.** For an updated example, see [upbound/platform-ref-aws](https://github.com/upbound/platform-ref-aws).
+
+---
+
+
 # Crossplane configuration for an Internal Cloud Platform on AWS
 
 This repository contains the definition for a [Crossplane configuration](https://docs.crossplane.io/v1.11/concepts/packages/#configuration-packages) that bundles a set of API definitions. This configuration is a starting point for new users who are creating their first control plane in [Upbound](https://console.upbound.io).
